@@ -4,7 +4,7 @@ XSockets with WCF Guide
 # An introduction
 Lots of RESTful WCF services out there with lots of polling over AJAX to them.
 Even though I would like to replace these walkie-talkie applications with realtime it´s not likely 
-taht we will see this yet. However, you can boost your WCF (or any other legacy application) to realtime with XSockets.
+that we will see this yet. However, you can boost your WCF (or any other legacy application) to realtime with XSockets.
 
 # For who´?
 Anyone interested in realtime development with knowledge of C# and JavaScript
