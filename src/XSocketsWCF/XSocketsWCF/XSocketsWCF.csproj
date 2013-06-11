@@ -130,7 +130,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="default.htm" />
-    <Content Include="DummyFile.txt" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\json2.js" />
@@ -148,31 +147,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="XSocketsNET\ServerExample\ReadMe.txt" />
-    <Content Include="XSocketsNET\XSocketServerPlugins\ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="packages.config">
-      <SubType>Designer</SubType>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CodeTemplates\Scaffolders\XSockets.Bootstrapper\XSockets.BootstrapperTemplate.cs.t4" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CodeTemplates\Scaffolders\XSockets.Bootstrapper\XSockets.Bootstrapper.ps1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CodeTemplates\Scaffolders\XSocketController\XSocketStronglyTypedControllerTemplate.cs.t4" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CodeTemplates\Scaffolders\XSocketController\XSocketLongRunningControllerTemplate.cs.t4" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CodeTemplates\Scaffolders\XSocketController\XSocketController.ps1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CodeTemplates\Scaffolders\XSocketController\XSocketBasicControllerTemplate.cs.t4" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
