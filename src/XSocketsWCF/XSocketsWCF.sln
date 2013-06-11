@@ -1,11 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XSocketsWCF", "XSocketsWCF\XSocketsWCF.csproj", "{A7F81CEF-34A8-4308-AA93-DC375A410CEA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XSockets.DevServer", "XSockets.DevServer\XSockets.DevServer.csproj", "{5D215B0E-437A-42B5-B20C-7F58D62FBF42}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XSocketHandler", "XSocketHandler\XSocketHandler.csproj", "{5C579FEA-EBA2-4302-AD2D-2B0CD1BC94A4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,14 +13,6 @@ Global
 		{A7F81CEF-34A8-4308-AA93-DC375A410CEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A7F81CEF-34A8-4308-AA93-DC375A410CEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A7F81CEF-34A8-4308-AA93-DC375A410CEA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D215B0E-437A-42B5-B20C-7F58D62FBF42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D215B0E-437A-42B5-B20C-7F58D62FBF42}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D215B0E-437A-42B5-B20C-7F58D62FBF42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D215B0E-437A-42B5-B20C-7F58D62FBF42}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C579FEA-EBA2-4302-AD2D-2B0CD1BC94A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C579FEA-EBA2-4302-AD2D-2B0CD1BC94A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C579FEA-EBA2-4302-AD2D-2B0CD1BC94A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C579FEA-EBA2-4302-AD2D-2B0CD1BC94A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

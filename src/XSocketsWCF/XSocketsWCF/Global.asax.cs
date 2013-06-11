@@ -28,20 +28,18 @@ namespace XSocketsWCF
                 "{controller}/{action}/{id}", // URL with parameters
                 new { controller = "Home", action = "Index", id = UrlParameter.Optional } // Parameter defaults
             );
-
             routes.MapRoute("Fallback", "{controller}/{action}", new { controller = "Fallback", action = "Init" }, new[] { "XSockets.Longpolling" });
         }
 
         protected void Application_Start()
         {
             //Register the WCF-service
-            RouteTable.Routes.Add(new ServiceRoute("RoomService", new WebServiceHostFactory(), typeof(RoomService)));
+            RouteTable.Routes.Add(new ServiceRoute("ZooService", new WebServiceHostFactory(), typeof(ZooService)));
 
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
-            new XSockets.DevServer.DebugInstance();
         }
     }
 }

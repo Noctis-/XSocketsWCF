@@ -2,18 +2,23 @@
 <html>
 <head>
     <title></title>
-    <script src="/Scripts/jXSockets.2.0.3.js" type="text/javascript"></script>
-    <script src="/Scripts/jquery-1.7.2.js" type="text/javascript"></script>
-    
+    <script src="Scripts/jquery-1.9.1.js"></script>
+    <script src="Scripts/jXSockets.2.3.js"></script>
+   
     <script type="text/javascript">
 
         var ws = null;
         $(function () {
-            ws = new XSockets.WebSocket("ws://127.0.0.1:4502/Generic");
+            ws = new XSockets.WebSocket("ws://127.0.0.1:4502/Zoo");
             
             //Just write to the console on open
             ws.bind(XSockets.Events.open, function (client) {
                 console.log('OPEN', client);
+                
+                //Subscribe to the Say event
+                ws.bind('Say', function (msg) {
+                    $('#info').prepend($("<p>").text(msg.message));
+                });
             });
             
             //Just in case ;)
@@ -21,15 +26,12 @@
                 console.log('ERROR', err);
             });
 
-            //Subscribe the OnUserJoined event 
-            ws.bind('OnUserJoined', function (msg) {
-                $('#info').prepend($("<p>").text(msg.Message));
-            });
-
-            //Faking a room signin with AJAX
-            $('#signin').bind('click', function (e) {
-                $.getJSON('http://localhost:1377/roomservice/joinroom/'+$('#name').val(), function (d) {
-                    $('#info').prepend($("<p>").text('WCF message: ' + d));                    
+            
+            //AJAX call to WCF, then the WCF will call the XSocket-server
+            $('#send').bind('click', function (e) {
+                $.getJSON('http://localhost:1377/zooservice/say/' + $('#message').val()).done(function (d) {
+                    //Returned from AJAX call...
+                    $('#info').prepend($("<p>").text(d));                    
                 });
             });
         });
@@ -37,10 +39,9 @@
     </script>
 </head>
     <body>
-        <div><strong>Open a few windows to make it more fun!</strong></div>
-        <input type="text" placeholder="Name here..." value="Ken" id="name"/>
-        <button id="signin">Click Me To Fake A RoomSignIn</button>
-        <label>Or just open another window with (<i>http://localhost:1377/roomservice/joinroom/yournamehere</i>) as location</label>
+        <div><strong>Open a few windows to make it more fun! You will then see the messages sent from one WCF request dispatched to all clients.</strong></div>
+        <input type="text" placeholder="Message here..." value="Zebras are nice" id="message"/>
+        <button id="send">Click me to send a message from the WCF over websockets</button>        
         <div id="info"></div>
     </body>
 </html>
