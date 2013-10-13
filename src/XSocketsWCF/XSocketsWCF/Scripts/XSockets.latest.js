@@ -1,5 +1,5 @@
 ﻿/*
-* XSockets.NET jXSockets.2.3
+* XSockets.NET XSockets.latest
 * http://xsockets.net/
 * Distributed in whole under the terms of the MIT
  
@@ -30,58 +30,6 @@
 * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 *
 */
-var Queue = function (options) {
-    var self = this;
-    this.settings = options;
-    this.length = 0;
-    this.items = [];
-    this.timer = 0;
-    self.items.push = function (data) {
-        self.length++;
-        if (self.length === 1) self.timer = setInterval(function () {
-            var arr = self.items.slice(0, 1);
-            if (arr.length === 1) {
-                self.items.remove(arr[0]);
-                options.dequeued.call(this, arr[0]);
-            }
-        }, options.interval);
-        return Array.prototype.push.call(this, data);
-    };
-    self.items.remove = function () {
-        var what, a = arguments,
-            l = a.length,
-            ax;
-        while (l && this.length) {
-            what = a[--l];
-            while ((ax = this.indexOf(what)) != -1) {
-                this.splice(ax, 1);
-            }
-        }
-        self.length--;
-        if (self.length === 0) {
-            options.clean.call(this);
-            clearInterval(self.timer);
-        }
-        return this;
-    };
-    this.enqueue = function (value) {
-        self.items.push({
-            k: self.length,
-            v: value
-        });
-    };
-    this.cleanUp = function () {
-        clearInterval(self.timer);
-        self.items = [];
-    };
-    this.Empty = function () {
-        self.items.forEach(function (item) {
-            options.dequeued.call(this, item);
-            self.items.remove(item);
-        }, this);
-        clearInterval(self.timer);
-    };
-};
 var Subscriptions = (function () {
     /// <summary>
     ///     Module to handle subscriptions (add,get,remove) and all its callbacks.
@@ -113,6 +61,8 @@ var Subscriptions = (function () {
         return storedSub.Callbacks.length;
     };
     this.get = function (name) {
+
+
         /// <summary>
         ///     Returns the subscription and all its callbacks.
         ///     if not found null is returned.
@@ -120,6 +70,7 @@ var Subscriptions = (function () {
         /// <param name="name" type="string">
         ///    Name of the subscription.
         /// </param> 
+        if (typeof (name) === "undefined") return;
         name = name.toLowerCase();
         for (var i = 0; i < subscriptions.length; i++) {
             if (subscriptions[i].Name === name) return subscriptions[i];
@@ -169,32 +120,33 @@ var Subscriptions = (function () {
         /// <param name="ix" type="number">
         ///    The index of the callback to trigger (optional)
         /// </param>
+        if (typeof (name) === "undefined") return;
         name = name.toLowerCase();
         for (var i = 0; i < subscriptions.length; i++) {
             if (subscriptions[i].Name === name) {
                 if (ix === undefined) {
                     subscriptions[i].fireCallbacks(message, cb);
                 } else {
-                    
+
                     subscriptions[i].fireCallback(message, cb, ix);
                 }
             }
         }
     };
-    var subscription = function(name) {
+    var subscription = function (name) {
         this.Name = name;
         this.Callbacks = [];
-        this.addCallback = function(fn, opt) {
+        this.addCallback = function (fn, opt) {
             this.Callbacks.push(new callback(name, fn, opt));
         };
-        this.fireCallback = function(message, cb, ix) {
+        this.fireCallback = function (message, cb, ix) {
             this.Callbacks[ix - 1].fn(message);
-           
-            if (typeof(this.Callbacks[ix - 1].state) === "object") {
-                if (typeof(this.Callbacks[ix - 1].state.options) !== "undefined" && typeof(this.Callbacks[ix - 1].state.options.counter) !== "undefined") {
+
+            if (typeof (this.Callbacks[ix - 1].state) === "object") {
+                if (typeof (this.Callbacks[ix - 1].state.options) !== "undefined" && typeof (this.Callbacks[ix - 1].state.options.counter) !== "undefined") {
                     this.Callbacks[ix - 1].state.options.counter.messages--;
                     if (this.Callbacks[ix - 1].state.options.counter.messages === 0) {
-                        if (typeof(this.Callbacks[ix - 1].state.options.counter.completed) === 'function') {
+                        if (typeof (this.Callbacks[ix - 1].state.options.counter.completed) === 'function') {
                             this.Callbacks[ix - 1].state.options.counter.completed();
                         }
                     }
@@ -204,15 +156,15 @@ var Subscriptions = (function () {
                 cb(this.Callbacks[ix - 1].name);
             }
         };
-    
+
         this.fireCallbacks = function (message, cb) {
-           
+
             for (var c = 0; c < this.Callbacks.length; c++) {
                 this.fireCallback(message, cb, c + 1);
             }
         };
     };
-    var callback = function (name,func, opt) {
+    var callback = function (name, func, opt) {
         this.name = name;
         this.fn = func;
         this.state = opt;
@@ -222,8 +174,7 @@ var Subscriptions = (function () {
 (function () {
     "use strict";
     var jXSockets = {
-        Queue: true,
-        Delay: 30,
+        Delay: 20,
         Events: {
             onError: "xsockets.onerror",
             open: "xsockets.xnode.open",
@@ -242,7 +193,7 @@ var Subscriptions = (function () {
                 getallclients: "xsockets.getallclients",
                 onclientconnect: "xsockets.onclientconnect",
                 onclientdisconnect: "xsockets.onclientdisconnect",
-                disconnect : "xsockets.disconnect"
+                disconnect: "xsockets.disconnect"
             }
         },
         Utils: {
@@ -289,22 +240,24 @@ var Subscriptions = (function () {
             var subscriptions = new Subscriptions();
 
             var options = XSockets.Utils.extend({
-                queue: jXSockets.Queue,
                 apikey: null,
-                parameters: {}
+                parameters: {},
+                binaryType: "arraybuffer"
             }, settings);
+
+            this.connection = {};
+            
+            if (subprotocol === undefined) {
+                if (url.indexOf('?') === -1) {
+                    subprotocol = url.substring(url.lastIndexOf('/') + 1);
+                } else {
+                    var temp = url.substring(0, url.indexOf('?'));
+                    subprotocol = temp.substring(temp.lastIndexOf('/') + 1);
+                }
+            }            
             this.handler = subprotocol;
             this.channel = {};
-            if (options.queue) {
-                var queueSettings = {
-                    dequeued: function (item) {
-                        triggerDequeued(item.v.event, item.v.json, item.v.callback);
-                    },
-                    clean: function () { },
-                    interval: jXSockets.Delay
-                };
-                this.Queue = new Queue(queueSettings);
-            }
+
             var pubSub = {
                 subscribe: "xsockets.subscribe",
                 unsubscribe: "xsockets.unsubscribe",
@@ -319,6 +272,22 @@ var Subscriptions = (function () {
                 str = str.slice(0, str.length - 1);
                 return str;
             };
+            
+            var dispatch = function (eventName, message) {
+                if (subscriptions.get(eventName) === null) {
+                    return;
+                }
+                if (typeof message === "string") {
+                    message = JSON.parse(message);
+                }
+                subscriptions.fire(eventName, message, function (evt) {
+                });
+            };
+            var getClientType = function() {
+                if (typeof (window.WebSocket.CLOSED )  === "undefined") return "Fallback";
+                return "WebSocket" in window && WebSocket.CLOSED > 2 ? "RFC6455" : "Hixie";
+            };
+
             this.close = function (fn) {
                 /// <summary>
                 ///     Close the current XSocket WebSocket instance and the underlaying WebSocket. Server will fire the XSockets.Event.close event
@@ -327,10 +296,9 @@ var Subscriptions = (function () {
                 /// <param name="fn" type="function">
                 ///    A function to execute when closed.
                 /// </param>   
-              
-                this.trigger(XSockets.Events.connection.disconnect, { },fn);
+                this.trigger(XSockets.Events.connection.disconnect, {}, fn);
                 //dispatch("close", {});
-               // webSocket.close();
+                // webSocket.close();
                 //if (typeof fn === "function") fn();
             };
             this.getSubscriptions = function () {
@@ -341,37 +309,98 @@ var Subscriptions = (function () {
             };
             this.bind = function (event, fn, opts, callback) {
                 /// <summary>
-                ///     Attach a handler (subscription) for the current WebSocket Handler
+                ///     Establish a subscription on the XSocketsController connected.
                 /// </summary>
                 /// <param name="event" type="string">
-                ///    Name of the event to subscribe to (bind)
+                ///    Name unique name of the subscription (event)
                 /// </param> 
                 /// <param name="fn" type="function">
                 ///    A function to execute each time the event (subscription) is triggered.
                 /// </param>   
                 /// <param name="options" type="object">
-                ///   event (subscriptions) options
+                ///   Options, connsult the documentation
                 /// </param>
                 /// <param name="callback" type="function">
-                ///    A function to execute when completed.
+                ///    A function to execute when completed, if provided the server will pass a confirm message when subscriptions is established
                 /// </param>
                 var o = {
-                    options: opts,
-                    ready: webSocket.readyState
+                    options: !(opts instanceof Function) ? opts : {},
+                    ready: webSocket.readyState,
+                    confirm: (callback || opts) instanceof Function
                 };
                 if (o.ready === 1) {
                     self.trigger(new XSockets.Message(pubSub.subscribe, {
-                        Event: event
+                        Event: event,
+                        Confirm: o.confirm
                     }));
                 }
-                subscriptions.add(event, fn, o);
-                if (callback && typeof (callback) === "function") {
-                    callback();
+                if (fn instanceof Function) {
+                    subscriptions.add(event, fn, o);
+                } else if (fn instanceof Array) {
+                    fn.forEach(function (cb) {
+                        subscriptions.add(event, cb, o);
+                    });
                 }
+                if (typeof (callback) === "function" || typeof (opts) === "function") 
+                    subscriptions.add("__" + event, callback || opts, { options: { ready: 2 } });
+                return this;
+            };
+       
+            this.many = function (event, count, fn, opts,callback) {
+                /// <summary>
+                ///    Establish a subscription on the XSocketsController connected.  unbinds when the subscriptions callback has fired specified number of (count) times.
+                /// </summary>
+                /// <param name="event" type="String">
+                ///    Name of the event (subscription)
+                /// </param>           
+                /// <param name="count" type="Number">
+                ///     Number of times to listen to this event (subscription)
+                /// </param>           
+                /// <param name="fn" type="Function">
+                ///    A function to execute at the time the event is triggered the specified number of times.
+                /// </param> 
+                /// <param name="options" type="object">
+                ///   event (subscriptions) options
+                /// </param>
+                /// <param name="callback" type="function">
+                ///    A function to execute when completed, if provided the server will pass a confirm message when subscriptions is established
+                /// </param>
+                self.bind(event, fn, XSockets.Utils.extend({
+                    counter: {
+                        messages: count,
+                        completed: function () {
+                            self.unbind(event);
+                        }
+                    }
+                }, opts), callback || opts);
+                return this;
+            };
+            this.one = function (event, fn, opts,callback) {
+                /// <summary>
+                ///    Establish a subscription on the XSocketsController connected.  unbinds when the subscriptions callback has fired once (1)
+                /// </summary>
+                /// <param name="event" type="String">
+                ///    Name of the event (subscription)
+                /// </param>           
+                /// <param name="fn" type="Function">
+                ///    A function to trigger when executed once.
+                /// </param>       
+                /// <param name="options" type="object">
+                ///   event (subscriptions) options
+                /// </param>  
+                self.bind(event, fn, XSockets.Utils.extend({
+                    counter: {
+                        messages: 1,
+                        completed: function () {
+                            self.unbind(event);
+                        }
+                    }
+                }, opts), callback || opts);
+                return this;
             };
             this.unbind = function (event, callback) {
                 /// <summary>
-                ///     Remove a previously-attached event handler (subscription).
+                ///     Remove a subscription for the current client on the connected XSocketsController
                 /// </summary>
                 /// <param name="event" type="String">
                 ///    Name of the event (subscription) to unbind.
@@ -387,53 +416,7 @@ var Subscriptions = (function () {
                 if (callback && typeof (callback) === "function") {
                     callback();
                 }
-            };
-            this.many = function (event, count, callback, opts) {
-                /// <summary>
-                ///     Attach a handler to an event (subscription) for the current WebSocket Handler,  unbinds when the event is triggered the specified number of (count) times.
-                /// </summary>
-                /// <param name="event" type="String">
-                ///    Name of the event (subscription)
-                /// </param>           
-                /// <param name="count" type="Number">
-                ///     Number of times to listen to this event (subscription)
-                /// </param>           
-                /// <param name="callback" type="Function">
-                ///    A function to execute at the time the event is triggered the specified number of times.
-                /// </param> 
-                /// <param name="options" type="object">
-                ///   event (subscriptions) options
-                /// </param>
-                self.bind(event, callback, XSockets.Utils.extend({
-                    counter: {
-                        messages: count,
-                        completed: function () {
-                            self.unbind(event);
-                        }
-                    }
-                }, opts));
-            };
-            this.one = function (event, callback, opts) {
-                /// <summary>
-                ///    Attach a handler to an event (subscription) for the current WebSocket Handler. The handler is executed at most once.
-                /// </summary>
-                /// <param name="event" type="String">
-                ///    Name of the event (subscription)
-                /// </param>           
-                /// <param name="callback" type="Function">
-                ///    A function to trigger when executed once.
-                /// </param>       
-                /// <param name="options" type="object">
-                ///   event (subscriptions) options
-                /// </param>  
-                self.bind(event, callback, XSockets.Utils.extend({
-                    counter: {
-                        messages: 1,
-                        completed: function () {
-                            self.unbind(event);
-                        }
-                    }
-                }, opts));
+                return this;
             };
             this.trigger = function (event, json, callback) {
                 /// <summary>
@@ -448,10 +431,6 @@ var Subscriptions = (function () {
                 /// <param name="callback" type="function">
                 ///      A function to execute when completed. 
                 /// </param>
-
-
-                
-
                 if (typeof (event) !== "object") {
                     if (arguments.length !== 2 || typeof (json) !== "function") {
                         if (arguments.length === 1) {
@@ -462,94 +441,66 @@ var Subscriptions = (function () {
                         json = {};
                     }
                 }
-                if (options.queue && typeof (event) !== "object") {
-                    self.Queue.enqueue({
-                        event: event,
-                        json: json,
-                        callback: callback
-                    });
-                } else {
-                    triggerDequeued(event, json, callback);
-                }
-            };
-            var triggerDequeued = function (event, json, callback) {
+
+
                 if (typeof (event) !== "object") {
                     event = event.toLowerCase();
-                    var message = XSockets.Message(event, json);
-                    send(message.toString());
+                    var message = new XSockets.Message(event, json);
+                    webSocket.send(message.toString());
                     if (callback && typeof (callback) === "function") {
                         callback();
                     }
                 } else {
-                    send(event.toString());
+                    webSocket.send(event.toString());
                     if (json && typeof (json) === "function") {
                         json();
                     }
                 }
+
+                return this;
             };
             this.send = function (payload) {
                 /// <summary>
-                ///     Send a binary message to the current WebSocket Handler
+                ///     Send a message
                 /// </summary>
-                /// <param name="payload" type="BLOB">
-                ///     Binary object to send (Blob/ArrayBuffer).
+                /// <param name="payload" type="object">
+                ///     string / blob to send
                 /// </param> 
                 webSocket.send(payload);
             };
-            var dispatch = function (eventName, message) {
-                if (subscriptions.get(eventName) === null) {
-                    return;
-                }
-                if (typeof message === "string") {
-                    message = JSON.parse(message);
-                }
-                subscriptions.fire(eventName, message, function (evt) {
-                   
-                });
-            };
-            var raiseEvent = function (message) {
-                var event = null;
-                if (typeof message.data === "string") {
-                    var msg = JSON.parse(message.data);
-                    event = msg.event;
-                    dispatch(event, msg.data);
-                    
-                } else {
-                    dispatch(XSockets.Events.onBlob, message.data);
-                }
-            };
-            var send = function (payload) {
-                webSocket.send(payload);
-            };
-            Array.prototype.removeItem = function (str) {
-                for (var i = 0; i < this.length; i++) {
-                    if (escape(this[i]).match(escape(str.trim()))) {
-                        this.splice(i, 1);
-                        break;
-                    }
-                }
-                return this;
-            };
+
             if ('WebSocket' in window) {
-                var clientGuid = window.localStorage.getItem("XSocketsClientStorageGuid" + subprotocol) !== null ? window.localStorage.getItem("XSocketsClientStorageGuid" + subprotocol) : null;
-                if (options.apikey !== null) {
-                    options.parameters["apikey"] = options.apikey;
-                }
-                if (clientGuid !== null) {
-                    options.parameters["XSocketsClientStorageGuid"] = clientGuid;
-                }
+                if (getClientType() === "Fallback") {
+                    webSocket = new window.WebSocket(url, subprotocol);
+                } else {
+
+                    var storageGuid = window.localStorage.getItem("XSocketsClientStorageGuid" + subprotocol) !== null ?
+                        window.localStorage.getItem("XSocketsClientStorageGuid" + subprotocol) : null;
+                        if (storageGuid !== null) {
+                            options.parameters["XSocketsClientStorageGuid"] = storageGuid;
+                    }
                 url = url + parameters(options.parameters);
                 webSocket = new window.WebSocket(url, subprotocol);
+                webSocket.binaryType = options.binaryType;
+                }
             }
+            
+
+
             if (webSocket !== null) {
                 self.bind(jXSockets.Events.open, function (data) {
+                    self.connection = data;
+                    
                     window.localStorage.setItem("XSocketsClientStorageGuid" + subprotocol, data.StorageGuid);
+                    
+
                     var chain = subscriptions.getAll();
                     for (var e = 0; e < chain.length; e++) {
                         for (var c = 0; c < chain[e].Callbacks.length; c++) {
-                            if (chain[e].Callbacks[c].ready !== 1) {
+                            if (chain[e].Callbacks[c].state.ready === 0) {
                                 self.trigger(new XSockets.Message(pubSub.subscribe, {
-                                    Event: chain[e].Name
+                                    Event: chain[e].Name,
+                                    Confirm:  chain[e].Callbacks[c].state.confirm
                                 }));
                             }
                         }
@@ -558,14 +509,18 @@ var Subscriptions = (function () {
                     subscribe: false
                 });
                 webSocket.onclose = function (msg) {
-                    self.Queue.cleanUp();
                     dispatch('close', msg);
                 };
                 webSocket.onopen = function (msg) {
                     dispatch('open', msg);
                 };
                 webSocket.onmessage = function (message) {
-                    raiseEvent(message);
+                    if (typeof message.data === "string") {
+                        var msg = JSON.parse(message.data);
+                        dispatch(msg.event, msg.data);
+                    } else {
+                        dispatch(XSockets.Events.onBlob, message.data);
+                    }
                 };
             }
             return {
@@ -583,7 +538,9 @@ var Subscriptions = (function () {
                 subscribe: self.bind,
                 unsubscribe: self.unbind,
                 publish: self.trigger,
-                subscriptions: self.getSubscriptions
+                emit: self.trigger,
+                subscriptions: self.getSubscriptions,
+                clientType: getClientType()
             };
         },
         Channel: function () {

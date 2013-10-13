@@ -14,9 +14,11 @@ namespace XSocketsWCF.WCF.Service
     {        
         public string Say(string message)
         {
-            //Add a message to our QueueHelper that will process messages and send them to XSockets.
-            //Note that this Queue can be used from MVC or anything else serverside as well...
-            Helpers.XSocketsQueue.QueueMessage(new { message = "I was sent over WebSockets: " + message }.AsTextArgs("Say"));
+            //Get a connection (if it exists already that oen will be used)
+            var conn = ClientPool.GetInstance("ws://127.0.0.1:4502/Zoo", "*");
+
+            //We send an anonymous message here, but any object will work.
+            conn.Send(new { message = "I was sent over WebSockets: " + message }.AsTextArgs("Say"));
 
             //Do your WCF regular stuff whatever it might be... and then return
             return string.Format("I was returned from WCF: " + message);

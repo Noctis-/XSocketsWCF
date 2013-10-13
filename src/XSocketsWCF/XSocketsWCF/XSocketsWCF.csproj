@@ -44,12 +44,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="ServiceStack.Text">
-      <HintPath>..\packages\XSockets.Core.2.6.1\lib\net40\ServiceStack.Text.dll</HintPath>
+      <HintPath>..\packages\XSockets.Core.2.7.6\lib\net40\ServiceStack.Text.dll</HintPath>
     </Reference>
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.ServiceModel" />
@@ -77,44 +73,41 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="XSockets.Core, Version=2.6.1.0, Culture=neutral, PublicKeyToken=8ad25f64a239a5c8, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\XSockets.Core.2.6.1\lib\net40\XSockets.Core.dll</HintPath>
+    <Reference Include="XSockets.Core">
+      <HintPath>..\packages\XSockets.Core.2.7.6\lib\net40\XSockets.Core.dll</HintPath>
     </Reference>
-    <Reference Include="XSockets.Core.Common, Version=2.6.1.0, Culture=neutral, PublicKeyToken=8ad25f64a239a5c8, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\XSockets.Core.2.6.1\lib\net40\XSockets.Core.Common.dll</HintPath>
+    <Reference Include="XSockets.Core.Common">
+      <HintPath>..\packages\XSockets.Core.2.7.6\lib\net40\XSockets.Core.Common.dll</HintPath>
     </Reference>
     <Reference Include="XSockets.Core.Communication">
-      <HintPath>..\packages\XSockets.Server.2.6.1\lib\net40\XSockets.Core.Communication.dll</HintPath>
+      <HintPath>..\packages\XSockets.Server.2.7.6\lib\net40\XSockets.Core.Communication.dll</HintPath>
     </Reference>
     <Reference Include="XSockets.Extensibility.Handlers">
-      <HintPath>..\packages\XSockets.Server.2.6.1\lib\net40\XSockets.Extensibility.Handlers.dll</HintPath>
+      <HintPath>..\packages\XSockets.Server.2.7.6\lib\net40\XSockets.Extensibility.Handlers.dll</HintPath>
     </Reference>
-    <Reference Include="XSockets.External, Version=2.6.1.0, Culture=neutral, PublicKeyToken=8ad25f64a239a5c8, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\XSockets.External.2.6.1\lib\net40\XSockets.External.dll</HintPath>
+    <Reference Include="XSockets.External">
+      <HintPath>..\packages\XSockets.External.2.7.6\lib\net40\XSockets.External.dll</HintPath>
     </Reference>
-    <Reference Include="XSockets.Longpolling, Version=2.6.1.0, Culture=neutral, PublicKeyToken=8ad25f64a239a5c8, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\XSockets.Fallback.2.6.1\lib\net40\XSockets.Longpolling.dll</HintPath>
+    <Reference Include="XSockets.Longpolling">
+      <HintPath>..\packages\XSockets.Fallback.2.7.6\lib\net40\XSockets.Longpolling.dll</HintPath>
     </Reference>
-    <Reference Include="XSockets.Plugin.Framework, Version=1.6.0.0, Culture=neutral, PublicKeyToken=8ad25f64a239a5c8, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\XSockets.Core.2.6.1\lib\net40\XSockets.Plugin.Framework.dll</HintPath>
+    <Reference Include="XSockets.Plugin.Framework">
+      <HintPath>..\packages\XSockets.Core.2.7.6\lib\net40\XSockets.Plugin.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="XSockets.Plugin.Framework.Core, Version=1.6.0.0, Culture=neutral, PublicKeyToken=8ad25f64a239a5c8, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\XSockets.Core.2.6.1\lib\net40\XSockets.Plugin.Framework.Core.dll</HintPath>
+    <Reference Include="XSockets.Plugin.Framework.Core">
+      <HintPath>..\packages\XSockets.Core.2.7.6\lib\net40\XSockets.Plugin.Framework.Core.dll</HintPath>
     </Reference>
     <Reference Include="XSockets.Protocol">
-      <HintPath>..\packages\XSockets.Server.2.6.1\lib\net40\XSockets.Protocol.dll</HintPath>
+      <HintPath>..\packages\XSockets.Server.2.7.6\lib\net40\XSockets.Protocol.dll</HintPath>
     </Reference>
     <Reference Include="XSockets.Serialization">
-      <HintPath>..\packages\XSockets.Core.2.6.1\lib\net40\XSockets.Serialization.dll</HintPath>
+      <HintPath>..\packages\XSockets.Core.2.7.6\lib\net40\XSockets.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="XSockets.Server">
-      <HintPath>..\packages\XSockets.Server.2.6.1\lib\net40\XSockets.Server.dll</HintPath>
+      <HintPath>..\packages\XSockets.Server.2.7.6\lib\net40\XSockets.Server.dll</HintPath>
+    </Reference>
+    <Reference Include="XSockets.WebRTC">
+      <HintPath>..\packages\XSockets.Server.2.7.6\lib\net40\XSockets.WebRTC.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -123,7 +116,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\XSocketsQueue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WCF\Contract\IZooService.cs" />
     <Compile Include="WCF\Service\ZooService.cs" />
@@ -132,7 +124,11 @@
     <Content Include="default.htm" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.9.1.js" />
-    <Content Include="Scripts\jXSockets.2.3.js" />
+    <Content Include="Scripts\json2.js" />
+    <Content Include="Scripts\XSockets.fallback.latest.js" />
+    <Content Include="Scripts\XSockets.fallback.latest.min.js" />
+    <Content Include="Scripts\XSockets.latest.js" />
+    <Content Include="Scripts\XSockets.latest.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -140,6 +136,50 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="XSocketsNET\ServerExample\ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\Scaffolders\XSockets.Configuration\XSockets.ConfigurationTemplate.vb.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\Scaffolders\XSockets.Configuration\XSockets.ConfigurationTemplate.cs.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\Scaffolders\XSockets.Configuration\XSockets.Configuration.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\Scaffolders\XSockets.Bootstrapper\XSockets.BootstrapperTemplate.vb.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\Scaffolders\XSockets.Bootstrapper\XSockets.BootstrapperTemplate.cs.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\Scaffolders\XSockets.Bootstrapper\XSockets.Bootstrapper.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\Scaffolders\XSocketController\XSocketStronglyTypedControllerTemplate.vb.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\Scaffolders\XSocketController\XSocketStronglyTypedControllerTemplate.cs.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\Scaffolders\XSocketController\XSocketLongRunningControllerTemplate.vb.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\Scaffolders\XSocketController\XSocketLongRunningControllerTemplate.cs.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\Scaffolders\XSocketController\XSocketController.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\Scaffolders\XSocketController\XSocketBasicControllerTemplate.vb.t4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CodeTemplates\Scaffolders\XSocketController\XSocketBasicControllerTemplate.cs.t4" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
