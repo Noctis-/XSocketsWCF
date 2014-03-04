@@ -1,6 +1,6 @@
 ﻿using System.ServiceModel.Activation;
+using XSockets.Client;
 using XSockets.Core.XSocket.Helpers;
-using XSockets.External;
 using XSocketsWCF.WCF.Contract;
 
 namespace XSocketsWCF.WCF.Service

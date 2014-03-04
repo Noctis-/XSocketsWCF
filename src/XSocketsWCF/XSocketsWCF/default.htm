@@ -2,7 +2,7 @@
 <html>
 <head>
     <title></title>
-    <script src="Scripts/jquery-1.9.1.js"></script>
+    <script src="Scripts/jquery-2.1.0.js"></script>
     <script src="Scripts/XSockets.latest.js"></script>
    
     <script type="text/javascript">
@@ -29,7 +29,7 @@
             
             //AJAX call to WCF, then the WCF will call the XSocket-server
             $('#send').bind('click', function (e) {
-                $.getJSON('http://localhost:1377/zooservice/say/' + $('#message').val()).done(function (d) {
+                $.getJSON('http://localhost:6767/zooservice/say/' + $('#message').val()).done(function (d) {
                     //Returned from AJAX call...
                     $('#info').prepend($("<p>").text(d));                    
                 });
