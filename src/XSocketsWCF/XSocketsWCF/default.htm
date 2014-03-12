@@ -9,7 +9,7 @@
 
         var ws = null;
         $(function () {
-            ws = new XSockets.WebSocket("ws://127.0.0.1:4502/Zoo");
+            ws = new XSockets.WebSocket("ws://127.0.0.1:4502/ZooController");
             
             //Just write to the console on open
             ws.bind(XSockets.Events.open, function (client) {
